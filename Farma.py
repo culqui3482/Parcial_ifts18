@@ -7,6 +7,28 @@ from flask_bootstrap import Bootstrap
 import csv
 
 
+#errores:
+#class tipo_error():
+ #   def __init__(self,Error_code='', Error_desc='',Error_route= ''):
+ #       self.Code=Error_code
+  #      self.Desc=Error_desc
+ #       self.Route=Error_route
+ #   def Redireccionar_error(self):    
+ #       return render_template(self.Route)
+
+#CONSULTA
+'''class Farma_consulta():
+    """docstring for Farma_consulta"""
+    def __init__(self, codigo= false,nombre='',filtro=''):
+        self.codigo=codigo
+        self.nombre=nombre
+        self.filtro=filtro
+
+    def Consutar(self):
+        pass
+
+         return render_template('consulta_respuesta.html',respuesta = respuesta)'''
+
 #login
 class AdminBD():
     def __init__(self,ruta=''):
@@ -65,9 +87,13 @@ def login():
             
     return (render_template('loginFar.html',form = miform))
 
+#Redireccion de  errores
+'''@app.errorHandler(400)
 
 
+@app.errorHandler(404)
 
+@app.errorHandler(500)'''
 
 
 
