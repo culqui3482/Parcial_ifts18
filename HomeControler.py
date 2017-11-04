@@ -65,7 +65,7 @@ def login():
 
 
 
-@app.route('/ingreso',methods=['GET','POST'])
+@app.route('/registro',methods=['GET','POST'])
 def Ingre_usuario():
     form = ingresoUsuario()
     if (form.validate_on_submit()):
