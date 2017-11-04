@@ -70,7 +70,11 @@ class FormularioLogin(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired()])
     submit = SubmitField('Login')
 
-
+@app.route('/index',methods=['GET'])
+@app.route('/',methods=['GET'])
+def index():
+    return render_template('index.html')
+    
 @app.route('/login',methods=['GET','POST'])
 def login():
     miform= FormularioLogin()
