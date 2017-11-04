@@ -1,12 +1,32 @@
 {% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+{% endblock %}
+
 
 {% block content %}
 
-<form method="POST" action="#">
-    {{ form.csrf_token }}</br>
-    {{ form.name.label }} {{ form.name(size=20) }}</br>
-    {{ form.password.label }} {{ form.password(size=20) }}</br>
+<form action="/login" method="POST">
+	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Ingresar</h1>
+			</div>
+ 			
+	{{ form.csrf_token }}</br>
+    {{ form.usuario.label }} {{ form.usuario(size=20) }}</br>
+    {{ form.password.label }} {{ form.password(size=20) }}</br></br>
     {{ form.submit }}
+
+			
+		</div>
+	</div>
 </form>
+ 
+
+
+ 
+
 {% endblock %}
 
