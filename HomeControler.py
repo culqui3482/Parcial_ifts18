@@ -18,11 +18,11 @@ class miformulario(FlaskForm):
     password = PasswordField('Password',[validators.data_required(message = "Tiene que ingresar una Password")])
     submit = SubmitField('Ingresar')
 
-'''class alta(FlaskForm):
+class ingresoUsuario(FlaskForm):
     usuario = StringField('Usuario', [validators.data_required(message = "Tiene que ingresar un Ususario")])
-    password = PasswordField('Password', [validators.data_required(message = "Tiene que ingresar una Password")])
+    password = PasswordField('Password',[DataRequired(),EqualTo("password1",message = "Tiene que ingresar una Password")])
     password1= PasswordField('Repetir Password', [validators.data_required(message = "Ingresar la misma contraseña")])
-    submit = SubmitField("Enviar")'''
+    submit = SubmitField("Enviar")
 
 def validar(user,passw):
         with open("csv/usuarios.csv",'r') as archivo:
@@ -42,6 +42,15 @@ def leerArchivoFar():
             lista= list(reader)
         return lista
 
+def agregar_usuario(usuario,password):
+    with open('csv/usuarios.csv','a') as archivo:
+        archivo.write('{},{}\n'.format(usuario,password))
+      #  linea= str(usuario)+','+str(password)+ '\n' 
+      #  archivo.write(linea)
+
+
+
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     miform=miformulario()
@@ -53,6 +62,21 @@ def login():
             return render_template('error_login.html')
             
     return (render_template('loginFar.html',form = miform))
+
+
+
+@app.route('/ingreso',methods=['GET','POST'])
+def Ingre_usuario():
+    form = ingresoUsuario()
+    if (form.validate_on_submit()):
+        if(form.password.data != form.password1.data):
+            return "Los passwords no coinciden!!!"
+        else:
+            agregar_usuario(form.usuario.data,form.password.data)
+            return render_template('ingreso_usuario.html',form=form,mostrar_mje=True)
+            
+    return render_template('ingreso_usuario.html',form=form)
+
 
 
 

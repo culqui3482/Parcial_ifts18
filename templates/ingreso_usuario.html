@@ -16,7 +16,8 @@
  			
 	{{ form.csrf_token }}</br>
     {{ form.usuario.label }} {{ form.usuario(size=20) }}</br>
-    {{ form.password.label }} {{ form.password(size=20) }}</br></br>
+    {{ form.password.label }} {{ form.password(size=20) }}</br>
+	{{ form.password1.label }} {{ form.password(size=20) }}</br></br>
     {{ form.submit }}
 
 			
@@ -24,6 +25,6 @@
 	</div>
 </form>
  
-
 {% endblock %}
+
 
