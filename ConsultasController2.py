@@ -7,6 +7,16 @@ from flask_bootstrap import Bootstrap
 import csv
 import pandas as pandas
 
+app= Flask(__name__)
+app.config['SECRET_KEY'] = 'UN STRING MUY DIFICIL'
+app.config['BOOTSTRAP_SERVE_LOCAL']=True
+boot=Bootstrap(app)
+
+class miformulario(FlaskForm):
+    tipoConsulta = StringField('tipoConsulta', [validators.data_required(message = "Selecciones un tipo de consulta")])
+    filtroBusqueda = StringField('filtroBusqueda',[validators.data_required(message = "Tiene que ingresar un dato para filtrar la busqueda")])
+    submit = SubmitField('Buscar')
+
 archivoFar = 'csv/ArchivoFar.csv'
 tabla1 = pandas.read_csv(archivoFar)
 
@@ -16,61 +26,46 @@ colCliente = tabla1['CLIENTE']
 colCantidad = tabla1['CANTIDAD']
 colPrecio = tabla1['PRECIO']
 
-class farmaConsulta():
-    def __init__(self,nombre='',filtro=''):
-        self.nombre=nombre
-        self.filtro=filtro
+# class farmaConsulta():
+#     def __init__(self,codigo='',nombre='',filtro=''):
+#         self.codigo = codigo           
+#         self.nombre = nombre
+#         self.filtro = filtro
+
+def productos_mas_vendidos():
+    respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7).as_matrix([colCodigo,colProducto,colCantidad])
+    return render_template('consulta_respuesta.html',respuesta = respuesta)
+
+def clientes_que_mas_gastaron():
+    colGastoTotal = tabla1['GASTO_TOTAL']
+    colGastoTotal = (colCantidad * colPrecio)
+    respuesta = tabla1.groupby(colCliente,as_index=False)['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente,colProducto,colCantidad,colGastoTotal])
+    return render_template('consulta_respuesta.html',respuesta = respuesta)
+
+def productos_por_cliente(filtroBusqueda):
+    
+    return render_template('consulta_respuesta.html',respuesta = respuesta)
+
+def clientes_por_producto(filtroBusqueda):
+
+    return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 
-def masVendidos():
-        respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(5).as_matrix([colCodigo,colProducto,colCantidad])
-        return render_template('consulta_respuesta.html',respuesta = respuesta)
-
-def masVendidos():
-        respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(5).as_matrix([colCodigo,colProducto,colCantidad])
-        return render_template('consulta_respuesta.html',respuesta = respuesta)
-# def Consutar():
-#     form = formularioConsulta()
-#     if(form.validate_on_submit()):
-#         aut= AdminBD('usuarios.csv')
-#         if (validar(form.name.data,form.password.data)):
-#             mostrar_tabla=AdminBD('archivoFar.csv')
-#             modelo=leerArchivoFar()
-            
-#     return render_template('consulta_respuesta.html',respuesta = respuesta)
-
-      
-    '''def agregar(self,usuario,password):
-        archivo = open(self.rutaArchivo,'a')
-        try:
-            linea= str(usuario)+','+str(password)+'\n'
-            archivo.write(linea)
-        finally:
-            archivo.close()'''
-
-app= Flask(__name__)
-app.config['SECRET_KEY'] = 'UN STRING MUY DIFICIL'
-app.config['BOOTSTRAP_SERVE_LOCAL']=True
-boot=Bootstrap(app)
-
+def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
+    if tipoConsulta == 'pmv':
+        productos_mas_vendidos()
+    elif tipoConsulta == 'cmg':
+        clientes_que_mas_gastaron()
+    elif tipoConsulta == 'ppc':
+        productos_por_cliente(filtroBusqueda)
+    elif tipoConsulta == 'cpp':
+        clientes_por_producto(filtroBusqueda)   
 
 @app.route('/consulta',methods=['GET','POST'])
-def login():
-    miform= formularioConsulta()
-    
-    if(miform.validate_on_submit()):
-        #aut= AdminBD('usuarios.csv')
-        #if (aut.validar(miform.name.data,miform.password.data)):
-            mostrar_tabla=AdminBD('archivoFar.csv')
-            modelo=mostrar_tabla.leerArchivoFar()
-            
-            return (render_template('welcome_table.html',modelo=modelo,nombre=miform.name.data))
-        else:
-            return render_template('error_login.html')
-            
-    return (render_template('loginFar.html',form = miform))
-
-
-
-
-
+def consultar():
+    miform= formularioConsulta()   
+    if miform.validate_on_submit():
+        seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda) 
+    else:
+        return "debe ingresar Filtros validos para buscar" 
+    return render_template('consulta.html',form = miform)
