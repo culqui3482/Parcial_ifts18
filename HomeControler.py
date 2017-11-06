@@ -42,13 +42,23 @@ def leerArchivoFar():
             lista= list(reader)
         return lista
 
+def leerArchiUsu():
+        with open('csv/usuarios.csv','r') as archivo:
+            reader= csv.reader(archivo)
+            leer= list(reader)
+        return leer
+
+
 def agregar_usuario(usuario,password):
     with open('csv/usuarios.csv','a') as archivo:
         archivo.write('{},{}\n'.format(usuario,password))
       #  linea= str(usuario)+','+str(password)+ '\n' 
       #  archivo.write(linea)
 
-
+@app.route('/index',methods=['GET'])
+@app.route('/',methods=['GET'])
+def index():
+    return render_template('index.html')
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -57,11 +67,21 @@ def login():
     if(miform.validate_on_submit()):
         if (validar(miform.usuario.data,miform.password.data)):
             modelo=leerArchivoFar()
+            #session["UserKey"] = miform.usuario.data
             return (render_template('welcome_table.html',modelo=modelo,nombre=miform.usuario.data))
         else:
             return render_template('error_login.html')
             
     return (render_template('loginFar.html',form = miform))
+
+@app.route('/listausuario',methods=['GET','POST'])
+def listaUsuario():
+    listUsu=leerArchiUsu()
+    if(miform.validate_on_submit()):
+        if (validar(listUsu.usuario.data,listUsu.password.data)):
+            modelo1=leerArchivoFar()
+            #session["UserKey"] = miform.usuario.data
+            return (render_template('lista_usuarios.html',modelo1=modelo1,nombre=listUsu.usuario.data,password=listUsu.password.data))
 
 
 
@@ -70,12 +90,19 @@ def Ingre_usuario():
     form = ingresoUsuario()
     if (form.validate_on_submit()):
         if(form.password.data != form.password1.data):
+
             return "Los passwords no coinciden!!!"
         else:
             agregar_usuario(form.usuario.data,form.password.data)
             return render_template('ingreso_usuario.html',form=form,mostrar_mje=True)
             
     return render_template('ingreso_usuario.html',form=form)
+
+'''@app.route('/logout')
+def logout():
+    session.pop('UserKey', None)
+    return render_template('index.html')'''
+
 
 
 

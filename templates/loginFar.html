@@ -7,6 +7,7 @@
 
 {% block content %}
 
+
 <form action="/login" method="POST">
 	<div class="login">
 		<div class="login-screen">
@@ -23,7 +24,12 @@
 		</div>
 	</div>
 </form>
- 
+  {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
 
 {% endblock %}
 
