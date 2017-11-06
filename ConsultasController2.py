@@ -18,22 +18,29 @@ colPrecio = tabla1['PRECIO']
 
 #CONSULTA
 class farmaConsulta():
-    def __init__(self, codigo='',nombre='',filtro=''):
-        self.codigo=codigo
+    def __init__(self,nombre='',filtro=''):
         self.nombre=nombre
         self.filtro=filtro
 
-def Consutar():
-    form = formularioConsulta()
-    if(form.validate_on_submit()):
-        aut= AdminBD('usuarios.csv')
-        if (validar(form.name.data,form.password.data)):
-            mostrar_tabla=AdminBD('archivoFar.csv')
-            modelo=leerArchivoFar()
-            
-    return render_template('consulta_respuesta.html',respuesta = respuesta)
 
-        
+def masVendidos():
+        respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(5).as_matrix([colCodigo,colProducto,colCantidad])
+        return render_template('consulta_respuesta.html',respuesta = respuesta)
+
+def masVendidos():
+        respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(5).as_matrix([colCodigo,colProducto,colCantidad])
+        return render_template('consulta_respuesta.html',respuesta = respuesta)
+# def Consutar():
+#     form = formularioConsulta()
+#     if(form.validate_on_submit()):
+#         aut= AdminBD('usuarios.csv')
+#         if (validar(form.name.data,form.password.data)):
+#             mostrar_tabla=AdminBD('archivoFar.csv')
+#             modelo=leerArchivoFar()
+            
+#     return render_template('consulta_respuesta.html',respuesta = respuesta)
+
+      
     '''def agregar(self,usuario,password):
         archivo = open(self.rutaArchivo,'a')
         try:
@@ -67,6 +74,4 @@ def login():
 
 
 
-if(__name__ == '__main__'):
-    app.run(debug=True,host='0.0.0.0')
 
