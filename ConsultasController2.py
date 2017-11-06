@@ -16,7 +16,6 @@ colCliente = tabla1['CLIENTE']
 colCantidad = tabla1['CANTIDAD']
 colPrecio = tabla1['PRECIO']
 
-#CONSULTA
 class farmaConsulta():
     def __init__(self,nombre='',filtro=''):
         self.nombre=nombre
