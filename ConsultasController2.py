@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, session, redirect, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import *
@@ -12,10 +12,10 @@ app.config['SECRET_KEY'] = 'UN STRING MUY DIFICIL'
 app.config['BOOTSTRAP_SERVE_LOCAL']=True
 boot=Bootstrap(app)
 
-class miformulario(FlaskForm):
-    tipoConsulta = StringField('tipoConsulta', [validators.data_required(message = "Selecciones un tipo de consulta")])
-    filtroBusqueda = StringField('filtroBusqueda',[validators.data_required(message = "Tiene que ingresar un dato para filtrar la busqueda")])
-    submit = SubmitField('Buscar')
+# class miformulario(FlaskForm):
+#     tipoConsulta = StringField('Consulta seleccionada', [validators.data_required(message = "Seleccione un tipo de consulta")])
+#     filtroBusqueda = StringField('Filtrar',[validators.data_required(message = "Tiene que ingresar un dato para filtrar la busqueda")])
+#     submit = SubmitField('Buscar')
 
 ARCHIVO_FAR = 'csv/ArchivoFar.csv'
 TABLA1 = pandas.read_csv(ARCHIVO_FAR)
@@ -65,6 +65,8 @@ def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
 def consultar():
     miform= formularioConsulta()   
     if miform.validate_on_submit():
+        tipoConsulta = request.form.get('consulta_seleccionada')
+        filtroBusqueda = request.form.get('fitroBusqueda')
         seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda) 
     else:
         return "debe ingresar Filtros validos para buscar" 
