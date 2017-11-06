@@ -17,14 +17,14 @@ class miformulario(FlaskForm):
     filtroBusqueda = StringField('filtroBusqueda',[validators.data_required(message = "Tiene que ingresar un dato para filtrar la busqueda")])
     submit = SubmitField('Buscar')
 
-archivoFar = 'csv/ArchivoFar.csv'
-tabla1 = pandas.read_csv(archivoFar)
+ARCHIVO_FAR = 'csv/ArchivoFar.csv'
+TABLA1 = pandas.read_csv(ARCHIVO_FAR)
 
-colCodigo = tabla1['CODIGO']
-colProducto = tabla1['PRODUCTO']
-colCliente = tabla1['CLIENTE']
-colCantidad = tabla1['CANTIDAD']
-colPrecio = tabla1['PRECIO']
+colCodigo = TABLA1['CODIGO']
+colProducto = TABLA1['PRODUCTO']
+colCliente = TABLA1['CLIENTE']
+colCantidad = TABLA1['CANTIDAD']
+colPrecio = TABLA1['PRECIO']
 
 # class farmaConsulta():
 #     def __init__(self,codigo='',nombre='',filtro=''):
@@ -33,17 +33,17 @@ colPrecio = tabla1['PRECIO']
 #         self.filtro = filtro
 
 def productos_mas_vendidos():
-    respuesta = tabla1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7).as_matrix([colCodigo,colProducto,colCantidad])
+    respuesta = TABLA1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7).as_matrix([colCodigo, colProducto, colCantidad])
     return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def clientes_que_mas_gastaron():
-    colGastoTotal = tabla1['GASTO_TOTAL']
-    colGastoTotal = (colCantidad * colPrecio)
-    respuesta = tabla1.groupby(colCliente,as_index=False)['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente,colProducto,colCantidad,colGastoTotal])
+    col_gasto_total = TABLA1['GASTO_TOTAL']
+    col_gasto_total = (colCantidad * colPrecio)
+    respuesta = TABLA1.groupby(colCliente, as_index=False)['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])
     return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def productos_por_cliente(filtroBusqueda):
-    
+
     return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def clientes_por_producto(filtroBusqueda):
