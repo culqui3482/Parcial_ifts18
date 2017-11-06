@@ -7,8 +7,8 @@ from flask_bootstrap import Bootstrap
 import csv
 import pandas as pandas
 
-archivo = r 'csv/ArchivoFar.csv'
-tabla1 = pandas.read_csv(archivo)
+archivoFar = 'csv/ArchivoFar.csv'
+tabla1 = pandas.read_csv(archivoFar)
 
 colCodigo = tabla1['CODIGO']
 colProducto = tabla1['PRODUCTO']
@@ -18,12 +18,10 @@ colPrecio = tabla1['PRECIO']
 
 #CONSULTA
 class farmaConsulta():
-    def __init__(self, codigo= false,nombre='',filtro=''):
+    def __init__(self, codigo='',nombre='',filtro=''):
         self.codigo=codigo
         self.nombre=nombre
         self.filtro=filtro
-
-        
 
 def Consutar():
     form = formularioConsulta()
@@ -50,13 +48,13 @@ app.config['BOOTSTRAP_SERVE_LOCAL']=True
 boot=Bootstrap(app)
 
 
-@app.route('/login',methods=['GET','POST'])
+@app.route('/consulta',methods=['GET','POST'])
 def login():
-    miform= FormularioLogin()
+    miform= formularioConsulta()
     
     if(miform.validate_on_submit()):
-        aut= AdminBD('usuarios.csv')
-        if (aut.validar(miform.name.data,miform.password.data)):
+        #aut= AdminBD('usuarios.csv')
+        #if (aut.validar(miform.name.data,miform.password.data)):
             mostrar_tabla=AdminBD('archivoFar.csv')
             modelo=mostrar_tabla.leerArchivoFar()
             
