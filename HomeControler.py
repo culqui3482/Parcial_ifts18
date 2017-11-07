@@ -52,8 +52,6 @@ def leerArchiUsu():
 def agregar_usuario(usuario,password):
     with open('csv/usuarios.csv','a') as archivo:
         archivo.write('{},{}\n'.format(usuario,password))
-      #  linea= str(usuario)+','+str(password)+ '\n' 
-      #  archivo.write(linea)
 
 @app.route('/index',methods=['GET'])
 @app.route('/',methods=['GET'])

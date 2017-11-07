@@ -43,7 +43,7 @@ def clientes_que_mas_gastaron():
     return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def productos_por_cliente(filtroBusqueda):
-
+    respuesta = TABLA1,filter(like = '{filtroBusqueda}').as_matrix([colCliente, colCodigo, colProducto, colCantidad, col_gasto_total].head(20)
     return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def clientes_por_producto(filtroBusqueda):
