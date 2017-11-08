@@ -6,7 +6,7 @@ from wtforms.validators import *
 from flask_bootstrap import Bootstrap
 #import pandas as pandas
 import csv
-import pandas as pandas
+import pandas as pd
 
 
 
@@ -175,13 +175,6 @@ def error_interno(e):
 #------------------------------CONSULTAS
 
 ARCHIVO_FAR = 'csv/archivoFar.csv'
-TABLA1 = pandas.read_csv(ARCHIVO_FAR)
-
-colCodigo = TABLA1['CODIGO']
-colProducto = TABLA1['PRODUCTO']
-colCliente = TABLA1['CLIENTE']
-colCantidad = TABLA1['CANTIDAD']
-colPrecio = TABLA1['PRECIO']
 
 # class farmaConsulta():
 #     def __init__(self,codigo='',nombre='',filtro=''):
@@ -190,18 +183,11 @@ colPrecio = TABLA1['PRECIO']
 #         self.filtro = filtro
 
 def productos_mas_vendidos():
-    #respuesta = TABLA1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7).as_matrix([colCodigo, colProducto, colCantidad])
-    ##variante por si no anda
-    df = pandas.read_csv(ARCHIVO_FAR)
-    #df = df[df['CANTIDAD']]
-    #respuesta = respuesta.groupby(colProducto)
-    #respuesta = respuesta.as_matrix([colCodigo, colProducto, colCantidad])
-    respuestaTemp = df.groupby(by=['PRODUCTO'], as_index=False).sum()
-    respuestaTemp = respuestaTemp.sort_values(by=['CANTIDAD'])
-    respuestaTemp = respuestaTemp.tail(5).iloc[::-1]
+    df = pd.read_csv(ARCHIVO_FAR)
+    respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()
+    respuesta = respuesta.sort_values(by=['CANTIDAD'])
+    respuesta = respuesta.tail(5).iloc[::-1]
     #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
-    respuesta = pd.DataFrame(respuestaTemp)
     return respuesta
 
 def clientes_que_mas_gastaron():
@@ -210,12 +196,13 @@ def clientes_que_mas_gastaron():
     #respuesta = TABLA1[['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])]
     #respuesta = respuesta.as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])
     #respuesta.to_html()
-    df = pandas.read_csv(ARCHIVO_FAR)
+    df = pd.read_csv(ARCHIVO_FAR)
     df['totalGastado'] = df['CANTIDAD']*df['PRECIO']
     respuesta = df.groupby(by=['CLIENTE'], as_index=False).sum()
     respuesta = respuesta.sort_values(by=['totalGastado'])
     respuesta = respuesta.tail(5).iloc[::-1]
     respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
+    respuesta.mean().to_frame().T
     return respuesta
 
 def productos_por_cliente(filtroBusqueda):
@@ -223,25 +210,28 @@ def productos_por_cliente(filtroBusqueda):
     #respuesta = colCliente == filtroBusqueda
     #respuesta = respuesta.as_matrix([colCliente, colProducto, colCodigo, colPrecio, colCantidad].head(20))
     #respuesta.to_html()
-    df = pandas.read_csv(ARCHIVO_FAR)
+    df = pd.read_csv(ARCHIVO_FAR)
     return respuesta
 
 def clientes_por_producto(filtroBusqueda):
     #respuesta = colProducto == filtroBusqueda
     #respuesta = respuesta.as_matrix([colCodigo,colProducto,colPrecio, colCantidad, colCliente].head(20))
     #respuesta.to_html()
-    df = pandas.read_csv(ARCHIVO_FAR)
+    df = pd.read_csv(ARCHIVO_FAR)
     return respuesta
 
 def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
     if tipoConsulta == 'pmv':
-        productos_mas_vendidos()
+        respuesta = productos_mas_vendidos()
     elif tipoConsulta == 'cmg':
-        clientes_que_mas_gastaron()
+        respuesta = clientes_que_mas_gastaron()
     elif tipoConsulta == 'ppc':
-        productos_por_cliente(filtroBusqueda)
+        respuesta = productos_por_cliente(filtroBusqueda)
     elif tipoConsulta == 'cpp':
-        clientes_por_producto(filtroBusqueda)   
+        respuesta = clientes_por_producto(filtroBusqueda)   
+    else:
+         '<div style="text-align: center;"> <p>no hay items para mostrar haga una nueva consulta verificando los datos</p><a href="/consulta" class="btn btn-default">Hacer una nueva consulta</a> </div>'   
+    return respuesta
 
 
 @app.route('/buscar',methods=['GET','POST'])
@@ -252,7 +242,8 @@ def buscar():
         respuesta = seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
     else: 
         return render_template('error_login.html') 
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    return respuesta.to_html()
+    #return render_template('consulta_respuesta.html',respuesta.to_html(),username=session.get('username'))
     #return 'respuesta'
     
 
