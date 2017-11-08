@@ -196,11 +196,12 @@ def productos_mas_vendidos():
     #df = df[df['CANTIDAD']]
     #respuesta = respuesta.groupby(colProducto)
     #respuesta = respuesta.as_matrix([colCodigo, colProducto, colCantidad])
-    respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()
-    respuesta = respuesta.sort_values(by=['CANTIDAD'])
-    respuesta = respuesta.tail(5).iloc[::-1]
-    respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
-    #return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    respuestaTemp = df.groupby(by=['PRODUCTO'], as_index=False).sum()
+    respuestaTemp = respuestaTemp.sort_values(by=['CANTIDAD'])
+    respuestaTemp = respuestaTemp.tail(5).iloc[::-1]
+    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    respuesta = pd.DataFrame(respuestaTemp)
     return respuesta
 
 def clientes_que_mas_gastaron():
@@ -252,5 +253,6 @@ def buscar():
     else: 
         return render_template('error_login.html') 
     return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
- 
+    #return 'respuesta'
+    
 
