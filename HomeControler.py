@@ -5,7 +5,6 @@ from wtforms import *
 from wtforms.validators import *
 from flask_bootstrap import Bootstrap
 #import pandas as pandas
-import ConsultasController2
 import csv
 import pandas as pandas
 
@@ -201,8 +200,8 @@ def productos_mas_vendidos():
     respuesta = respuesta.sort_values(by=['CANTIDAD'])
     respuesta = respuesta.tail(5).iloc[::-1]
     respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
-    
+    #return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    return respuesta
 
 def clientes_que_mas_gastaron():
     #col_gasto_total = TABLA1['GASTO_TOTAL']
@@ -216,7 +215,7 @@ def clientes_que_mas_gastaron():
     respuesta = respuesta.sort_values(by=['totalGastado'])
     respuesta = respuesta.tail(5).iloc[::-1]
     respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    return respuesta
 
 def productos_por_cliente(filtroBusqueda):
     #respuesta = TABLA1,filter(like = filtroBusqueda)
@@ -224,14 +223,14 @@ def productos_por_cliente(filtroBusqueda):
     #respuesta = respuesta.as_matrix([colCliente, colProducto, colCodigo, colPrecio, colCantidad].head(20))
     #respuesta.to_html()
     df = pandas.read_csv(ARCHIVO_FAR)
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    return respuesta
 
 def clientes_por_producto(filtroBusqueda):
     #respuesta = colProducto == filtroBusqueda
     #respuesta = respuesta.as_matrix([colCodigo,colProducto,colPrecio, colCantidad, colCliente].head(20))
     #respuesta.to_html()
     df = pandas.read_csv(ARCHIVO_FAR)
-    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
+    return respuesta
 
 def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
     if tipoConsulta == 'pmv':
@@ -249,8 +248,9 @@ def buscar():
     if 'username' in session:
         tipoConsulta = request.form.get('consulta_seleccionada')
         filtroBusqueda = request.form.get('fitroBusqueda')
-        seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
+        respuesta = seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
     else: 
         return render_template('error_login.html') 
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
  
 
