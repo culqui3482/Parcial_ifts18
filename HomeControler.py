@@ -64,33 +64,18 @@ def leerArchivoFar():
             lista= list(reader)
         return lista
 
-<<<<<<< HEAD
 
-=======
-def leerArchiUsu():
-        with open('csv/usuarios.csv','r') as archivo:
-            reader= csv.reader(archivo)
-            leer= list(reader)
-        return leer
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
 
 
 def agregar_usuario(usuario,password):
     with open('csv/usuarios.csv','a') as archivo:
         archivo.write('{},{}\n'.format(usuario,password))
-<<<<<<< HEAD
       
 #----------------------------------------------------------------------------------------------------
 
 
 #----------------------------------------------------------------------------------------------------
-=======
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
 
-@app.route('/index',methods=['GET'])
-@app.route('/',methods=['GET'])
-def index():
-    return render_template('index.html')
 
 
 # ...... Muesta la pagina de inicio del programa index......................................
@@ -111,25 +96,12 @@ def login():
     if(miform.validate_on_submit()):
         if (validar(miform.usuario.data,miform.password.data)):
             modelo=leerArchivoFar()
-<<<<<<< HEAD
             session['username']= miform.usuario.data
-=======
-            #session["UserKey"] = miform.usuario.data
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
             return (render_template('welcome_table.html',modelo=modelo,nombre=miform.usuario.data))
         else:
             flash("contrasenia incorrecta")
             return redirect(url_for('login'))        
     return (render_template('loginFar.html',form = miform))
-
-@app.route('/listausuario',methods=['GET','POST'])
-def listaUsuario():
-    listUsu=leerArchiUsu()
-    if(miform.validate_on_submit()):
-        if (validar(listUsu.usuario.data,listUsu.password.data)):
-            modelo1=leerArchivoFar()
-            #session["UserKey"] = miform.usuario.data
-            return (render_template('lista_usuarios.html',modelo1=modelo1,nombre=listUsu.usuario.data,password=listUsu.password.data))
 
 
 
@@ -158,24 +130,18 @@ def Ingre_usuario():
     form = ingresoUsuario()
     if (form.validate_on_submit()):
         if(form.password.data != form.password1.data):
-<<<<<<< HEAD
             flash("contrasenia incorrecta")
             return render_template('ingreso_usuario.html',form=form,mostrar_mje=True)
 
             #return redirect(url_for('login')) 
 
             #return "Los passwords no coinciden!!!"
-=======
-
-            return "Los passwords no coinciden!!!"
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
         else:
             agregar_usuario(form.usuario.data,form.password.data)
             return render_template('registroexitoso.html',form=form,mostrar_mje=True)
             
     return render_template('ingreso_usuario.html',form=form)
 
-<<<<<<< HEAD
 @app.route('/consulta',methods=['GET','POST'])
 def consultar():
     if 'username' in session:
@@ -184,14 +150,6 @@ def consultar():
         return render_template('consulta.html')
     else: 
         return render_template('error_login.html') 
-=======
-'''@app.route('/logout')
-def logout():
-    session.pop('UserKey', None)
-    return render_template('index.html')'''
-
-
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
 
 @app.route('/nologin',methods=['GET'])
 def Nologeado():
@@ -215,48 +173,8 @@ def no_encontrado(e):
 def error_interno(e):
     return render_template('500.html'), 500  
 
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
 #------------------------------CONSULTAS
-'''
+
 ARCHIVO_FAR = 'csv/archivoFar.csv'
 TABLA1 = pandas.read_csv(ARCHIVO_FAR)
 
@@ -279,29 +197,41 @@ def productos_mas_vendidos():
     #df = df[df['CANTIDAD']]
     #respuesta = respuesta.groupby(colProducto)
     #respuesta = respuesta.as_matrix([colCodigo, colProducto, colCantidad])
-    return render_template('consulta_respuesta.html',show = df.to_html())
+    respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()
+    respuesta = respuesta.sort_values(by=['CANTIDAD'])
+    respuesta = respuesta.tail(5).iloc[::-1]
+    respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
     
 
 def clientes_que_mas_gastaron():
-    col_gasto_total = TABLA1['GASTO_TOTAL']
-    col_gasto_total = (colCantidad * colPrecio)
-    respuesta = TABLA1[['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])]
+    #col_gasto_total = TABLA1['GASTO_TOTAL']
+    #col_gasto_total = (colCantidad * colPrecio)
+    #respuesta = TABLA1[['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])]
     #respuesta = respuesta.as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])
-    respuesta.to_html()
-    return render_template('consulta_respuesta.html',respuesta = respuesta)
+    #respuesta.to_html()
+    df = pandas.read_csv(ARCHIVO_FAR)
+    df['totalGastado'] = df['CANTIDAD']*df['PRECIO']
+    respuesta = df.groupby(by=['CLIENTE'], as_index=False).sum()
+    respuesta = respuesta.sort_values(by=['totalGastado'])
+    respuesta = respuesta.tail(5).iloc[::-1]
+    respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
 
 def productos_por_cliente(filtroBusqueda):
     #respuesta = TABLA1,filter(like = filtroBusqueda)
-    respuesta = colCliente == filtroBusqueda
-    respuesta = respuesta.as_matrix([colCliente, colProducto, colCodigo, colPrecio, colCantidad].head(20))
-    respuesta.to_html()
-    return render_template('consulta_respuesta.html',respuesta = respuesta)
+    #respuesta = colCliente == filtroBusqueda
+    #respuesta = respuesta.as_matrix([colCliente, colProducto, colCodigo, colPrecio, colCantidad].head(20))
+    #respuesta.to_html()
+    df = pandas.read_csv(ARCHIVO_FAR)
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
 
 def clientes_por_producto(filtroBusqueda):
-    respuesta = colProducto == filtroBusqueda
-    respuesta = respuesta.as_matrix([colCodigo,colProducto,colPrecio, colCantidad, colCliente].head(20))
-    respuesta.to_html()
-    return render_template('consulta_respuesta.html',respuesta = respuesta)
+    #respuesta = colProducto == filtroBusqueda
+    #respuesta = respuesta.as_matrix([colCodigo,colProducto,colPrecio, colCantidad, colCliente].head(20))
+    #respuesta.to_html()
+    df = pandas.read_csv(ARCHIVO_FAR)
+    return render_template('consulta_respuesta.html',dataTable=respuesta,username=session.get('username'))
 
 def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
     if tipoConsulta == 'pmv':
@@ -321,10 +251,6 @@ def buscar():
         filtroBusqueda = request.form.get('fitroBusqueda')
         seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
     else: 
-        return render_template('error_login.html') '''
+        return render_template('error_login.html') 
  
 
-=======
-if(__name__ == '__main__'):
-    app.run(debug=True,host='0.0.0.0')
->>>>>>> f33a877b420e3389939c0f8ab7894dee948a5b95
