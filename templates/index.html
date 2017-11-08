@@ -1,76 +1,58 @@
 {% extends "base.html" %}
-{% block head %}
-    {{ super() }}
-    <link rel="stylesheet" type="text/css" href="/static/css/style2.css">
-{% endblock %}
+
 
 
 {% block content %}
 
 <head>
-<style> 
-.flex-container {
-    display: -webkit-flex;
-    display: flex;  
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    text-align: center;
+<style>
+body, html {
+    height: 100%;
 }
+* body{background:#63646d
 
-.flex-container > * {
-    padding: 15px;
-    -webkit-flex: 1 100%;
-    flex: 1 100%;
 }
-
-.article {
-    text-align: left;
-}
-
-header {background: black;color:white;}
-footer {background: #aaa;color:white;}
+.parallax {
+    /* The image used */
+    background-image: url('https://images.adsttc.com/media/images/50e7/49b1/b3fc/4b10/a300/0164/medium_jpg/Spiralab_01.jpg?1413949470');
 
 
-.nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-.nav ul a {
-    text-decoration: none;
-}
+    /* Full height */
+    height: 100%; 
 
-
-@media all and (min-width: 768px) {
-    
-    .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
-    footer {-webkit-order:3;order:3;}
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 </style>
-
 </head>
 <body>
 
-<div class="flex-container">
-<header>
-  <h1>F A R M A @ </h1>
-</header>
-<nav class="nav">
+<div class="parallax"></div>
 
-</nav
-
-
-
-<article class="article">
-  <h1> Materias :</h1>
-  <p> * Estructura de datos</p>
-  <p> *Paradigmas de programacion</p>
-  <p><strong>Parcial realizado para ambas materias!</strong></p>
-</article>
+<div style="height:300px;background-color:#63646d ;font-size:20px; color:rgb(185,185,185)">
+	<br>
+	<p style="text-align: center;background-color:#63646d;font-family: Courier ">F A R M A @ </p>
+	<br><br>
+	<p style="text-align: center;background-color:#63646d ;font-family: Courier ">Pagina creada por:</p>
+	<br>
+	<p style="text-align: center;background-color:#63646d;font-family: Courier ">Culqui Flor && Rappeti Isabela</p>
 
 
-
-<footer>Realizado por Culqui,flor && Rapetti,Isabela</footer>
 </div>
+
+<div class="parallax"></div>
+
+
+
+    {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
 
 </body>
 

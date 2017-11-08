@@ -1,0 +1,28 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<form action="/buscar" method="POST">
+    <div class="form-group">
+        <div class="input-group">
+			<h1>Buscar</h1>
+            <select name="consulta_seleccionada" class="selectpicker form-control" required>
+                <option value="pmv">Productos mas vendidos</option>
+                <option value="cmg">Clientes que mas gastaron</option>
+                <option value="ppc">Productos por cliente</option>
+                <option value="cpp">Clientes por producto</option>
+            </select>
+            <input type="text" name="fitroBusqueda">                
+        </div>
+        <button type="submit">Buscar</button>
+    </div>
+</form>
+ 
+ {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
+
+{% endblock %}

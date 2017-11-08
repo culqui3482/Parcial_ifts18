@@ -16,16 +16,38 @@
  			
 	{{ form.csrf_token }}</br>
     {{ form.usuario.label }} {{ form.usuario(size=20) }}</br>
-    {{ form.usuario.message }}
+  
     {{ form.password.label }} {{ form.password(size=20) }}</br>
+
+   
+
 	{{ form.password1.label }} {{ form.password1(size=20) }}</br></br>
+
+	 {% with messages=get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<label class="alert alert-warning">{{message}}</label>
+
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	
     {{ form.submit }}
 
 			
 		</div>
 	</div>
 </form>
- 
+
+ {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#323538;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
+
+
+
 {% endblock %}
 
 

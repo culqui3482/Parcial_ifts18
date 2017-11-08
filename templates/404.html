@@ -2,8 +2,16 @@
 
 {% block title %}404{% endblock %}
 
-{% block page_content %}
+{% block content %}
+<style>
+body{
+	background:#63646d 
+}
+</style>
 <div class="page-header">
-    <h1>Pagina no encontrada</h1>
+    <h1 style="color:white ;text-align: center">Pagina no encontrada</h1>
 </div>
-{% endblock %}
+
+<div style="display: flex;justify-content: center;align-items: center"><a href="/login" class="btn btn-primary active" role="button" >Home</a>
+</div>
+{% endblock %} 

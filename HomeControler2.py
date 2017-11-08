@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, session,flash,redirect,url_for,request
+from flask import render_template, session,flash,redirect,url_for
 from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import *
@@ -7,7 +7,6 @@ from flask_bootstrap import Bootstrap
 #import pandas as pandas
 import ConsultasController2
 import csv
-import pandas as pandas
 
 
 
@@ -36,7 +35,7 @@ class miformulario(FlaskForm):
 class ingresoUsuario(FlaskForm):
     usuario = StringField('Usuario', [validators.data_required(message = "Tiene que ingresar un Ususario")])
     password = PasswordField('Password',[DataRequired(),EqualTo("password1",message = "Tiene que ingresar una Password")])
-    password1= PasswordField('Repetir Password', [validators.data_required(message = "Ingresar la misma contrasenia")])
+    password1= PasswordField('Repetir Password', [validators.data_required(message = "Ingresar la misma contraseña")])
     submit = SubmitField("Enviar")
 
 
@@ -142,14 +141,6 @@ def Ingre_usuario():
             
     return render_template('ingreso_usuario.html',form=form)
 
-@app.route('/consulta',methods=['GET','POST'])
-def consultar():
-    if 'username' in session:
-    #miform= formularioConsulta()   
-    #if miform.validate_on_submit():
-        return render_template('consulta.html')
-    else: 
-        return render_template('error_login.html') 
 
 @app.route('/nologin',methods=['GET'])
 def Nologeado():
@@ -171,49 +162,10 @@ def no_encontrado(e):
 
 @app.errorhandler(500)
 def error_interno(e):
-    return render_template('500.html'), 500  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+    return render_template('500.html'), 500 
 
 #------------------------------CONSULTAS
-'''
+
 ARCHIVO_FAR = 'csv/archivoFar.csv'
 TABLA1 = pandas.read_csv(ARCHIVO_FAR)
 
@@ -232,12 +184,10 @@ colPrecio = TABLA1['PRECIO']
 def productos_mas_vendidos():
     #respuesta = TABLA1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7).as_matrix([colCodigo, colProducto, colCantidad])
     ##variante por si no anda
-    df = pandas.read_csv(ARCHIVO_FAR)
-    #df = df[df['CANTIDAD']]
-    #respuesta = respuesta.groupby(colProducto)
-    #respuesta = respuesta.as_matrix([colCodigo, colProducto, colCantidad])
-    return render_template('consulta_respuesta.html',show = df.to_html())
-    
+    respuesta = TABLA1.groupby(colProducto,as_index=False)['CANTIDAD'].nlargest(7)
+    respuesta = respuesta.as_matrix([colCodigo, colProducto, colCantidad])
+    respuesta.to_html()
+    return render_template('consulta_respuesta.html',respuesta = respuesta)
 
 def clientes_que_mas_gastaron():
     col_gasto_total = TABLA1['GASTO_TOTAL']
@@ -278,6 +228,6 @@ def buscar():
         filtroBusqueda = request.form.get('fitroBusqueda')
         seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
     else: 
-        return render_template('error_login.html') '''
+        return render_template('error_login.html') 
  
 

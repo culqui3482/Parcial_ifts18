@@ -1,10 +1,22 @@
 
-{% extends "base.html" %}
+{% extends "base2.html" %}
 {% block content %}
 
+<head>
+<style>
+body{
+	background:#63646d 
+}
 
+</style>
+</head>
+<body>
+	<p style="text-align: center;font-family: Courier ;font-size: 40px;color:white"> Bienvenido  </p> <br><br>
 
-<h1>{{nombre}}</h1>
+	<p style="text-align: center;font-family: Courier ;font-size: 30px;color:white">{{nombre}} </p><br>
+	<p style="text-align: center;font-family: Courier ;font-size: 15px;color:white">Ultimas ventas</p><br>
+
+<!--<h1 >{{nombre}}</h1>-->
 
 <div class="container-fluid">
 	
@@ -22,5 +34,15 @@
 		</tbody>	
 	</table>
 </div>
+
+ {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
+
+
 {% endblock %}
+
 
