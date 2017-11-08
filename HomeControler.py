@@ -191,33 +191,26 @@ def productos_mas_vendidos():
     return respuesta
 
 def clientes_que_mas_gastaron():
-    #col_gasto_total = TABLA1['GASTO_TOTAL']
-    #col_gasto_total = (colCantidad * colPrecio)
-    #respuesta = TABLA1[['GASTO_TOTAL'].nlargest(7).as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])]
-    #respuesta = respuesta.as_matrix([colCliente, colProducto, colCantidad, col_gasto_total])
-    #respuesta.to_html()
     df = pd.read_csv(ARCHIVO_FAR)
     df['totalGastado'] = df['CANTIDAD']*df['PRECIO']
     respuesta = df.groupby(by=['CLIENTE'], as_index=False).sum()
     respuesta = respuesta.sort_values(by=['totalGastado'])
     respuesta = respuesta.tail(5).iloc[::-1]
-    respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
-    respuesta.mean().to_frame().T
+    #respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
     return respuesta
 
-def productos_por_cliente(filtroBusqueda):
-    #respuesta = TABLA1,filter(like = filtroBusqueda)
-    #respuesta = colCliente == filtroBusqueda
-    #respuesta = respuesta.as_matrix([colCliente, colProducto, colCodigo, colPrecio, colCantidad].head(20))
-    #respuesta.to_html()
+def productos_por_cliente(filtroBusqueda):   
     df = pd.read_csv(ARCHIVO_FAR)
+    respuesta = df[df.CLIENTE == filtroBusqueda]
+    respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
+    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CLIENTE', 'CANTIDAD', 'PRECIO'])
     return respuesta
 
-def clientes_por_producto(filtroBusqueda):
-    #respuesta = colProducto == filtroBusqueda
-    #respuesta = respuesta.as_matrix([colCodigo,colProducto,colPrecio, colCantidad, colCliente].head(20))
-    #respuesta.to_html()
+def clientes_por_producto(filtroBusqueda):  
     df = pd.read_csv(ARCHIVO_FAR)
+    respuesta = df[df.PRODUCTO == filtroBusqueda]
+    respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
+    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CLIENTE', 'CANTIDAD', 'PRECIO'])
     return respuesta
 
 def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
@@ -238,12 +231,15 @@ def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
 def buscar():
     if 'username' in session:
         tipoConsulta = request.form.get('consulta_seleccionada')
-        filtroBusqueda = request.form.get('fitroBusqueda')
+        if tipoConsulta == 'pmv'or 'cmg':
+            filtroBusqueda = 0
+        else:
+            filtroBusqueda = str(request.form.get('fitroBusqueda'))
         respuesta = seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda)
     else: 
         return render_template('error_login.html') 
     return respuesta.to_html()
-    #return render_template('consulta_respuesta.html',respuesta.to_html(),username=session.get('username'))
-    #return 'respuesta'
+    #return render_template('consulta_respuesta.html',respuesta.to_html())
+
     
 
