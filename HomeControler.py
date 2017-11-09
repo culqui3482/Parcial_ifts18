@@ -199,13 +199,14 @@ def clientes_que_mas_gastaron():
 
 def productos_por_cliente(filtroBusqueda):   
     df = pd.read_csv(ARCHIVO_FAR)
-    respuesta = df[df.CLIENTE == filtroBusqueda]
+    respuesta = df[df['PRODUCTO'].str.contains(filtroBusqueda)
     respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
     return respuesta
 
 def clientes_por_producto(filtroBusqueda):  
     df = pd.read_csv(ARCHIVO_FAR)
     respuesta = df[df.PRODUCTO == filtroBusqueda]
+    respuesta = df.loc[df['PRODUCTO'].str.contains(sub,filtroBusqueda, case=False)
     respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
     return respuesta
 
