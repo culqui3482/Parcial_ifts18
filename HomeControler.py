@@ -187,32 +187,29 @@ def productos_mas_vendidos():
     respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()
     respuesta = respuesta.sort_values(by=['CANTIDAD'])
     respuesta = respuesta.tail(5).iloc[::-1]
-    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CANTIDAD'])
     return respuesta
 
 def clientes_que_mas_gastaron():
     df = pd.read_csv(ARCHIVO_FAR)
-    df['totalGastado'] = df['CANTIDAD']*df['PRECIO']
+    df['TOTAL'] = df['CANTIDAD']*df['PRECIO']
     respuesta = df.groupby(by=['CLIENTE'], as_index=False).sum()
-    respuesta = respuesta.sort_values(by=['totalGastado'])
+    respuesta = respuesta.sort_values(by=['TOTAL'])
     respuesta = respuesta.tail(5).iloc[::-1]
-    #respuesta = respuesta.as_matrix(columns=['CLIENTE', 'totalGastado'])
     return respuesta
 
 def productos_por_cliente(filtroBusqueda):   
     df = pd.read_csv(ARCHIVO_FAR)
     respuesta = df[df.CLIENTE == filtroBusqueda]
     respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
-    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CLIENTE', 'CANTIDAD', 'PRECIO'])
     return respuesta
 
 def clientes_por_producto(filtroBusqueda):  
     df = pd.read_csv(ARCHIVO_FAR)
     respuesta = df[df.PRODUCTO == filtroBusqueda]
     respuesta = respuesta.groupby(by=['CODIGO', 'CLIENTE', 'PRODUCTO'], as_index=False).sum().iloc[::-1]
-    #respuesta = respuesta.as_matrix(columns=['CODIGO', 'PRODUCTO', 'CLIENTE', 'CANTIDAD', 'PRECIO'])
     return respuesta
 
+#(2) sepasa el t ipo de consulta. segun el tipo se redirecciona a su funcion para hacer la consultacorreespondiente, pasandole un filtro si es necesarios
 def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
     if tipoConsulta == 'pmv':
         respuesta = productos_mas_vendidos()
@@ -226,7 +223,7 @@ def seleccionar_tipo_consulta(tipoConsulta, filtroBusqueda):
          '<div style="text-align: center;"> <p>no hay items para mostrar haga una nueva consulta verificando los datos</p><a href="/consulta" class="btn btn-default">Hacer una nueva consulta</a> </div>'   
     return respuesta
 
-
+#(1) buscar se obtienen los datos del formulacrio de consulta y se devuelve un dataframe con el resultado
 @app.route('/buscar',methods=['GET','POST'])
 def buscar():
     if 'username' in session:
