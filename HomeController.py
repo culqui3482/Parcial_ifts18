@@ -163,11 +163,18 @@ def logout():
         return render_template('logout.html')
     else:
         return redirect(url_for('login'))
+
 #----------------- Validacion de archivos ----------------------------
-@app.route('/validararchivo',methods=['GET'])
+
+@app.route('/validar',methods=['POST'])
 def validacion_de_datos():
+    seleccion = request.form.get('csv')
+    if seleccion == 'a':
+        archivoAValidar = 'csv/arch_invalido1.csv'
+    elif seleccion == 'b':
+        archivoAValidar = 'csv/arch_invalido2.csv'              
     try:
-            with open('csv/archivoFar.csv','r') as archivo:
+            with open(archivoAValidar,'r') as archivo:
                 reader= csv.reader(archivo)
                 datos= list(reader)
                 validacion = False
@@ -197,7 +204,8 @@ def validacion_de_datos():
 
     except SalidaError as errores :
         print(errores)
-        print("El Archivo contiene errores")
+        print ("El Archivo contiene errores") 
+        
 #----------------------------------------------------------------------------
 
 #Redireccion de  errores####
