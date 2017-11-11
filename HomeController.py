@@ -27,20 +27,31 @@ def validar(user,passw):
                     if (password== passw):
                         encontrado=True
         return encontrado
-        
+
+archivoFar = 'csv/archivoFar.csv'  
+
 def leerArchivoFar():
-        with open('csv/archivoFar.csv','r') as archivo:
+        with open(archivoFar,'r') as archivo:
             reader= csv.reader(archivo)
             lista= list(reader)
         return lista
 
-
-
-
 def agregar_usuario(usuario,password):
     with open('csv/usuarios.csv','a') as archivo:
-        archivo.write('{},{}\n'.format(usuario,password))
-
+        encontrado = False
+            for linea in archivo:
+                lista= linea.split(",")
+                usuario=lista[0].strip()
+                password=lista[1].strip()
+                if (usuario == usuario):
+                    if (password== password):
+                        encontrado=True
+        if encontrado = False:
+              archivo.write('{},{}\n'.format(usuario,password))
+        elif encontrado = True:
+              mensaje = 'El usuario ya se encuentra registrado'
+              return render_template('ingreso_usuario.html', mensaje = mensaje)
+              
 
 # ...... Muesta la pagina de inicio del programa index......................................
 
