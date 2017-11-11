@@ -163,7 +163,43 @@ def logout():
         return render_template('logout.html')
     else:
         return redirect(url_for('login'))
-        
+#----------------- Validacion de archivos ----------------------------
+@app.route('/validararchivo',methods=['GET'])
+def validacion_de_datos():
+    try:
+            with open('csv/archivoFar.csv','r') as archivo:
+                reader= csv.reader(archivo)
+                datos= list(reader)
+                validacion = False
+
+                for indice in datos :
+                    if len(indice) != 5 :
+                        validacion = True                        
+                        raise SalidaError("La cantidad de campos en el archivo es incorecta")
+
+                    
+                    if indice['CODIGO'] is None :
+                        validacion = True
+                  
+                    
+                    if float(indice['CANTIDAD']) % 1 == 0 :
+                        validacion = True
+                    else :
+                        raise SalidaError("ingrese solo enteros")
+
+                    
+                    if float(indice['PRECIO']) % 1 == 0 or float(indice['PRECIO']) % 1 != 0 :
+                        validacion = True
+                    else:
+                        raise SalidaError("El precio debe ser un numero")
+            if validacion:
+                 return True
+
+    except SalidaError as errores :
+        print(errores)
+        print("El Archivo contiene errores")
+#----------------------------------------------------------------------------
+
 #Redireccion de  errores####
 @app.errorhandler(404)
 def no_encontrado(e):
