@@ -2,41 +2,32 @@ import csv
 import pandas as pd
 
 #------------------------------CONSULTAS---------------------------
-
-ARCHIVO_FAR = 'csv/archivoFar.csv'
-
 # class farmaConsulta():
 #     def __init__(self,codigo='',nombre='',filtro=''):
 #         self.codigo = codigo           
 #         self.nombre = nombre
 #         self.filtro = filtro
 
-
-#sort de registros utilizando pandas
+tabla1 = pd.read_csv(archivoFar)
+#sort de registros utilizando pandas todos devuelven una respuesta que se muestra en un solo template dinamico
 def productos_mas_vendidos():
-    df = pd.read_csv(ARCHIVO_FAR)
-    respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()
-    respuesta = respuesta.sort_values(by=['CANTIDAD'])
-    respuesta = respuesta.tail(5).iloc[::-1]
+    respuesta = tabla1.groupby(by=['PRODUCTO'], as_index=False).sum().sort_values(by=['CANTIDAD'])
+    respuesta = respuesta.head().iloc[::-1]
     return respuesta
 
 def clientes_que_mas_gastaron():
-    df = pd.read_csv(ARCHIVO_FAR)
-    df['TOTAL'] = df['CANTIDAD']*df['PRECIO']
-    respuesta = df.groupby(by=['CLIENTE'], as_index=False).sum()
-    respuesta = respuesta.sort_values(by=['TOTAL'])
-    respuesta = respuesta.tail(5).iloc[::-1]
+    tabla1['TOTAL'] = tabla1['CANTIDAD']*tabla1['PRECIO']
+    respuesta = tabla1.groupby(by=['CLIENTE'], as_index=False).sum().sort_values(by=['TOTAL'])
+    respuesta = respuesta.head().iloc[::-1]
     return respuesta
 
-def productos_por_cliente(filtroBusqueda):   
-    df = pd.read_csv(ARCHIVO_FAR)
-    respuesta = df[df.CLIENTE == filtroBusqueda]
+def productos_por_cliente(filtroBusqueda):
+    respuesta = tabla1[tabla1.CLIENTE == filtroBusqueda]
     respuesta = respuesta.groupby(by=['CODIGO','PRODUCTO','CANTIDAD','CLIENTE'], as_index=False).sum().iloc[::-1]
     return respuesta
 
-def clientes_por_producto(filtroBusqueda):  
-    df = pd.read_csv(ARCHIVO_FAR)
-    respuesta = df[df.PRODUCTO == filtroBusqueda]
+def clientes_por_producto(filtroBusqueda):
+    respuesta = tabla1[tabla1.PRODUCTO == filtroBusqueda]
     respuesta = respuesta.groupby(by=['CLIENTE','PRODUCTO','CODIGO','CANTIDAD'], as_index=False).sum().iloc[::-1]
     return respuesta
 
