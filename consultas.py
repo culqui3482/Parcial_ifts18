@@ -44,7 +44,7 @@ def clientes_por_producto(filtroBusqueda):
     respuesta = respuesta.sort_values(by=['TOTAL'])
     respuesta = respuesta.groupby(by=['PRODUCTO','CLIENTE','CANTIDAD','TOTAL'], as_index=False).sum().iloc[:,[0,1,2,3]]
     #Guarda los datos en un nuevo CSV,este se guarda codificado en UTF-8, separado con ",",en el cual hemos modicado en nombre de las columnas
-    respuesta.to_csv('descarga.csv',columns=['PRODUCTO','CLIENTE','CANTIDAD','TOTAL'], index=False)
+    respuesta.to_csv('descarga.csv',columns=['Cliente_por_Prods: ','PRODUCTO','CLIENTE','CANTIDAD','TOTAL'], index=False)
     return respuesta
 
 
