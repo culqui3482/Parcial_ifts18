@@ -1,29 +1,43 @@
-{% extends "base2.html" %}
+{% extends "base.html" %}
 {% block content %}
-
 <head>
-<style>
-body{
+	
+	<style>
+	.centrar
+	{
+		position: absolute;
+		/*nos posicionamos en el centro del navegador*/
+		top:50%;
+		left:50%;
+		/*determinamos una anchura*/
+		width:400px;
+		/*indicamos que el margen izquierdo, es la mitad de la anchura*/
+		margin-left:-200px;
+		/*determinamos una altura*/
+		height:300px;
+		/*indicamos que el margen superior, es la mitad de la altura*/
+		margin-top:-130px;
+		/*border:1px solid #808080;*/
+		padding:5px;
+	}
+    body{
 	background:#63646d 
 }
-</style>
+	</style>
 </head>
 <body>
 	<p style="text-align: center;font-family: Courier ;font-size: 40px;color:white">Resultado</p><br><br>
 <div class="container-fluid">	
-	<table class="table table-bordered table-condensed" >
-		<tbody>
-		{% for linea in  respuesta %}
-			<tr class="active">
-				{% for item in  linea %}
-				<td >{{item}}</td>
-				{% endfor %}		
-		</tr>
-		{% endfor %}
-		</tbody>	
-	</table>
+    {{tabla|safe}}
 </div>
-<a href="/consulta" class="btn btn-default">Hacer una nueva consulta</a>
+<div class='centrar'>
+<a href="/consulta" class="btn btn-default">Hacer una nueva consulta</a> 
+
+<a href="/descargar" class="btn btn-default">Descargar Archivo csv</a> 
+</div>
+
+
+
  {% block footer %}
         <br>
       <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>

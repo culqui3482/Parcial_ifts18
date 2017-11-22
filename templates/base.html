@@ -10,9 +10,16 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="/index">Home</a></li>
-      <li><a href="/login">Ingresar</a></li>
-      <li><a href="/registro">Registrar</a></li>
-    
+      {% if usuario_autenticado %}
+            <li><a href="/listaUsuarios">Lista Usuarios</a></li>
+            <li><a href="/consulta">Consultas</a></li>
+            <li><a href="/cambiopass">Cambiar Contrasenia</a></li>
+            <li><a href="/logout">salir</a></li>
+      {% else %}
+            <li><a href="/login">Ingresar</a></li>
+            <li><a href="/registro">Registrar</a></li>
+      {% endif %}
+      <li>{{ usuario_autenticado }}</li>
     </ul>
   </div>
 </nav>

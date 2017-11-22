@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+{% endblock %}
+
+
+{% block content %}
+
+<form action="#" method="POST">
+	<div class="contra">
+		<div class="contra-screen">
+			<div class="app-title">
+			<p style="text-align: center;font-family: Courier ;font-size: 40px;color:white"> Cambio de Contraseña  </p> <br><br>
+			</div>
+
+             	   <div style="color:white;text-align: center" >
+                    
+                        {{ form.csrf_token }}         
+                       {{ form.password.label }}  <div style="color:black"> {{ form.password(size=20) }}</div></br><br>
+
+                         {{ form.password1.label }} <div style="color:black"> {{ form.password1(size=20) }}</div></br><br>
+
+	                     {% with messages=get_flashed_messages() %}
+
+		                    {% if messages %}
+			                    {% for message in messages %}
+				                    <label class="alert alert-warning">{{message}}</label>
+
+			                    {% endfor %}
+		                    {% endif %}
+	                    {% endwith %}
+	
+                       <div style="color:black"> {{ form.submit }}</div>
+                   </div>
+			
+		</div>
+	</div>
+</form>
+
+ {% block footer %}
+        <br>
+      <p style="text-align: center;background-color:#323538;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
+        <br>
+        <br>
+      {% endblock %}
+
+
+
+{% endblock %}

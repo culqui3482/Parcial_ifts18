@@ -1,28 +1,57 @@
-{% extends "base2.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
-<form action="/buscar" method="POST">
-    <div class="form-group">
-        <div class="input-group">
-			<h1>Buscar</h1>
-            <select name="consulta_seleccionada" class="selectpicker form-control" required>
-                <option value="pmv">Productos mas vendidos</option>
-                <option value="cmg">Clientes que mas gastaron</option>
-                <option value="ppc">Productos por cliente</option>
-                <option value="cpp">Clientes por producto</option>
-            </select>
-            <input type="text" name="fitroBusqueda">                
-        </div>
-        <button type="submit">Buscar</button>
-    </div>
-</form>
- 
+<head>
+	
+	<style>
+	.centrar
+	{
+		position: absolute;
+		/*nos posicionamos en el centro del navegador*/
+		top:50%;
+		left:50%;
+		/*determinamos una anchura*/
+		width:400px;
+		/*indicamos que el margen izquierdo, es la mitad de la anchura*/
+		margin-left:-200px;
+		/*determinamos una altura*/
+		height:300px;
+		/*indicamos que el margen superior, es la mitad de la altura*/
+		margin-top:-150px;
+		/*border:1px solid #808080;*/
+		padding:5px;
+	}
+    body{
+	background:#63646d 
+}
+	</style>
+</head>
+<body>
+    <div class='centrar'>
+    <form action="/buscar" method="POST">
+        <div class="form-group" style="text-align: center">
+            <div class="input-group" style="text-align: center">
+		        <p style="text-align: center;font-family: Courier ;font-size: 40px;color:white"> Seleccionar Consultas </p> <br>
+                <select name="consulta_seleccionada" class="selectpicker form-control" style="text-align: center"required><br><br>
+                    <option value="pmv">Productos mas vendidos</option>
+                    <option value="cmg">Clientes que mas gastaron</option>
+                    <option value="ppc">Productos por cliente</option>
+                    <option value="cpp">Clientes por producto</option>
+                </select>
+              <input type="text" name="filtroBusqueda" placeholder="Escribir cliente o producto"> <br><br>          
+            </div>
+                <button type="submit">Buscar</button>
+         </div>
+    </form>
+    <div>
+
  {% block footer %}
         <br>
       <p style="text-align: center;background-color:#63646d;font-family: Courier;color:rgb(185,185,185) ">F A R M A @ </p>
         <br>
         <br>
       {% endblock %}
+</body>
 
 {% endblock %}
