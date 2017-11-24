@@ -12,7 +12,7 @@ ARCHIVO_FAR = 'csv/archivoFar.csv'
 def productos_mas_vendidos():
     df = pd.read_csv(ARCHIVO_FAR)#llamamos al archivo csv
     respuesta = df.groupby(by=['PRODUCTO'], as_index=False).sum()# agrupamos por producto en el cual no se visualiza el index
-    respuesta = respuesta.sort_values(by=['CANTIDAD'])
+    respuesta = respuesta.sort_values(by=['CANTIDAD']) #Ordena por los valores a cantidad.
     respuesta = respuesta.tail(4).iloc[:,0:3] # aca llamo a respuesta el cual se vera solo los 5 registros y modificamos el orden de las columnas a visualizar
     #Guarda los datos en un nuevo CSV,este se guarda codificado en UTF-8, separado con ",",en el cual hemos modicado en nombre de las columnas.
     respuesta.to_csv('descarga.csv',columns=['Prods. mas Vendidos: ','PRODUCTO','CODIGO','CANTIDAD'], index=False)
