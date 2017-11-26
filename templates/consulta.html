@@ -28,18 +28,19 @@
 	</style>
 </head>
 <body>
-    <div class='centrar'>
+   <div class='centrar'>
     <form action="/buscar" method="POST">
         <div class="form-group" style="text-align: center">
             <div class="input-group" style="text-align: center">
 		        <p style="text-align: center;font-family: Courier ;font-size: 40px;color:white"> Seleccionar Consultas </p> <br>
-                <select name="consulta_seleccionada" class="selectpicker form-control" style="text-align: center"required><br><br>
+                <select name="consulta_seleccionada" class="selectpicker form-control" style="text-align: center" required onchange="if(this.value=='ppc' || this.value=='cpp') {document.getElementById('filtro').disabled = false} else {document.getElementById('filtro').disabled = true} "><br><br>
                     <option value="pmv">Productos mas vendidos</option>
                     <option value="cmg">Clientes que mas gastaron</option>
                     <option value="ppc">Productos por cliente</option>
                     <option value="cpp">Clientes por producto</option>
                 </select>
-              <input type="text" name="filtroBusqueda" placeholder="Escribir cliente o producto"> <br><br>          
+              
+              <input id="filtro" type="text" name="filtroBusqueda" placeholder="Escribir cliente o producto" disabled> <br><br>          
             </div>
                 <button type="submit">Buscar</button>
          </div>
