@@ -127,16 +127,16 @@ def listaUsuario():#autenticacion del usuario
 
 @app.route('/registro',methods=['GET','POST'])#obtener y enviar datos....
 def Ingre_usuario():
-    form = ingresoUsuario()# llama a la clase ingresoUsuario de formulario.py
-    if (form.validate_on_submit()):
-        if(form.password.data != form.password1.data):# verifica el pass ingresado se identico ..
-            flash("contrasenia incorrecta")
-            return render_template('ingreso_usuario.html',form=form,mostrar_mje=True)
-        else:
+   form = ingresoUsuario()# llama a la clase ingresoUsuario de formulario.py
+    
+    if(form.validate_on_submit()):  
+        if(form.password.data == form.password1.data):
             agregar_usuario(form.usuario.data,form.password.data)
-            return render_template('registroexitoso.html',form=form,mostrar_mje=True)
-            
-    return render_template('ingreso_usuario.html',form=form)
+        return render_template('registroexitoso.html',form=form,mostrar_mje=True)
+    else:
+        if(form.password.data!=form.password1.data):
+            flash("Las contraseñas deben ser iguales")
+        return render_template('ingreso_usuario.html',form=form)    
 
 # .....................................................................................................
 # --------Cambio de Contraseña ----------
