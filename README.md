@@ -1,4 +1,4 @@
-<h1>Farma@<h1>
+<h1> Final --- Farma@<h1>
 <hr>
 <h5>Esta es una aplicación Web creada  para consultar la base de datos  de  la empresa Farma@  en donde están almacenadas todas las ventas que se realizaron.<h5>
 <br>
@@ -37,6 +37,14 @@ Cuando el usuario este ingresado se llevara a una nueva ventana donde esta dando
  * Consultas: Donde podra realizar consulta realizando una busqueda por producto por cliente, productos mas vendidos.
  * Salir: cierra la session del usuario.
  * Vistas de errores: 500,404, logeo.<h5>
+ 
+<hr>
+<h4>Final <h4>
+<hr>
+
+ * Registro Usuario: Se mejoro el registro de usuario con mensaje de validacion ante contraseñas distintas.
+ * Consultas: En la seleccion de datos para la consulta se valida que el filtro sea solo para los valores Productos por cliente  y  Clientes por producto. 
+ *  Descarga de consultas en csv: Se agrego el punto solicitado de fecha y nombre en el archivo de consulta
 
 
 
